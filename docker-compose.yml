@@ -1,0 +1,37 @@
+version: '2'
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: admin4infra
+    volumes:
+      - data-postgres:/var/lib/postgres/data
+
+  nuxeo:
+    build:
+      context: .
+      dockerfile: Dockerfile-nuxeo
+    # image: 
+    #   - arizona/nuxeo-ffmpeg
+    ports:
+      - "8080:8080"
+    links:
+      - postgres
+    environment:
+      NUXEO_DB_TYPE: postgresql
+      NUXEO_DB_HOST: postgres
+      NUXEO_DB_NAME: nuxeo
+      NUXEO_DB_USER: nuxeo
+      NUXEO_DB_PASSWORD: nuxeo
+    volumes:
+      - data-nuxeo:/var/lib/nuxeo/data
+
+volumes:
+  data-postgres:
+    driver: local
+  data-nuxeo:
+    driver: local
