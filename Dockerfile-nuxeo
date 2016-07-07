@@ -1,7 +1,7 @@
 FROM nuxeo
 
 RUN echo "deb http://httpredir.debian.org/debian jessie non-free" >> /etc/apt/sources.list
-RUN apt-get update && apt-get install -y --no-install-recommends libfaac-dev git
+RUN apt-get update && apt-get install -y --no-install-recommends libfaac-dev git libreoffice
 
 WORKDIR /tmp
 # Build ffmpeg
