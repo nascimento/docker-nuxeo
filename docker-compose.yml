@@ -14,10 +14,11 @@ services:
       - data-postgres:/var/lib/postgres/data
 
   nuxeo:
-    build:
-      context: .
-      dockerfile: Dockerfile-nuxeo
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile-nuxeo
     # image: arizona/nuxeo-ffmpeg
+    image: nuxeo
     ports:
       - "8080:8080"
     links:
