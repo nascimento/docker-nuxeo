@@ -1,6 +1,18 @@
 version: '2'
 services:
 
+  proxynuxeo:
+    image: httpd:2.4
+    volumes:
+      - ./proxy/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./proxy/proxynuxeo.conf:/usr/local/apache2/conf/vhosts/proxynuxeo.conf
+      - ./proxy/_default:/usr/local/apache2/conf/ssl/_default
+    links:
+      - nuxeo
+    ports:
+      - "80:80"
+      - "443:443"
+
   postgres:
     build:
       context: .
@@ -13,12 +25,16 @@ services:
     volumes:
       - data-postgres:/var/lib/postgres/data
 
+  elasticsearch:
+    image: elasticsearch
+    volumes:
+      - data-elasticsearch:/usr/share/elasticsearch/data
+
   nuxeo:
     # build:
     #   context: .
     #   dockerfile: Dockerfile-nuxeo
-    # image: arizona/nuxeo-ffmpeg
-    image: nuxeo
+    image: arizona/nuxeo-ffmpeg
     ports:
       - "8080:8080"
     links:
@@ -29,7 +45,9 @@ services:
       NUXEO_DB_NAME: nuxeo
       NUXEO_DB_USER: nuxeo
       NUXEO_DB_PASSWORD: nuxeo
-      NUXEO_PACKAGES: "nuxeo-web-mobile nuxeo-drive nuxeo-diff nuxeo-spreadsheet nuxeo-dam nuxeo-template-rendering nuxeo-template-rendering-samples nuxeo-showcase-content"
+
+      NUXEO_PACKAGES: "nuxeo-diff nuxeo-spreadsheet nuxeo-dam nuxeo-template-rendering" # nuxeo-web-mobile nuxeo-drive  nuxeo-template-rendering-samples nuxeo-showcase-content
+
     volumes:
       - data-nuxeo:/var/lib/nuxeo/data
 
@@ -37,4 +55,8 @@ volumes:
   data-postgres:
     driver: local
   data-nuxeo:
+    driver: local
+  data-elasticsearch:
+    driver: local
+  data-redis:
     driver: local
