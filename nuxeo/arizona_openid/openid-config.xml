@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Necessario instalar o componente:
+    openid-authentication-1.1.1
+-->
+<component name="org.nuxeo.ecm.platform.oauth2.openid.auth0.config" version="1.0">
+   <require>org.nuxeo.ecm.platform.oauth2.openid.auth0</require>
+   <!--<extension target="org.nuxeo.ecm.platform.oauth2.openid.OpenIDConnectProviderRegistry" point="providers">-->
+      <!--<provider>-->
+         <!--<name>GoogleOpenIDConnect</name>-->
+         <!--<clientId>762600336964-8dd1ksscfsvb1mgmh1nsc4bfm53tmakj.apps.googleusercontent.com</clientId>-->
+         <!--<clientSecret>hZasnGE8td3x0U27FKVcnkfJ</clientSecret>-->
+      <!--</provider>-->
+   <!--</extension>-->
+   <extension target="org.nuxeo.ecm.platform.oauth2.openid.OpenIDConnectProviderRegistry" point="providers">
+      <provider>
+         <name>Auth0OpenIDConnect</name>
+         <clientId>OtCL6age22HveXQ4LzKKT23KCGtuglCN</clientId>
+         <clientSecret>2y-gXKAPutSY_JBKjETexBpNVzTQ5O2oryFzMvMbmNLOyKdwsYZpnNHi52Rix4z0</clientSecret>
+      </provider>
+   </extension>
+</component>

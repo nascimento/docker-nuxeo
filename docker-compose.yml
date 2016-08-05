@@ -12,9 +12,7 @@ services:
       - "443:443"
 
   postgres:
-    build:
-      context: .
-      dockerfile: Dockerfile-postgres
+    build: ./postgres
     ports:
       - "5432:5432"
     environment:
@@ -40,7 +38,7 @@ services:
       - data-redis:/data
 
   nuxeo:
-    image: arizona/nuxeo-ffmpeg
+    build: ./nuxeo
     ports:
       - "8080:8080"
     links:
