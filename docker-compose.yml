@@ -2,11 +2,7 @@ version: '2'
 services:
 
   proxynuxeo:
-    image: httpd:2.4
-    volumes:
-      - ./proxy/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ./proxy/proxynuxeo.conf:/usr/local/apache2/conf/vhosts/proxynuxeo.conf
-      - ./proxy/_default:/usr/local/apache2/conf/ssl/_default
+    build: ./proxy
     links:
       - nuxeo
     depends_on:
@@ -44,9 +40,6 @@ services:
       - data-redis:/data
 
   nuxeo:
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile-nuxeo
     image: arizona/nuxeo-ffmpeg
     ports:
       - "8080:8080"
@@ -58,6 +51,15 @@ services:
       - redis
       - postgres
       - elasticsearch
+    volumes:
+      - data-nuxeo:/var/lib/nuxeo/data
+      # Packages to Nuxeo install
+      - ./nuxeo/packages:/opt/nuxeo_arizona_packages
+      # EntryPoint
+      - ./nuxeo/arizona_packages.sh:/docker-entrypoint-initnuxeo.d/arizona_packages.sh
+      - ./nuxeo/arizona_s3.sh:/docker-entrypoint-initnuxeo.d/arizona_s3.sh
+      # OpenId
+      - ./nuxeo/arizona_openid/openid-config.xml:/opt/nuxeo/server/nxserver/config/openid-config.xml
     environment:
       NUXEO_DB_TYPE: postgresql
       NUXEO_DB_HOST: postgres
@@ -75,27 +77,9 @@ services:
       NUXEO_ES_SHARDS: 5
 
       NUXEO_PACKAGES: "nuxeo-diff nuxeo-spreadsheet nuxeo-dam nuxeo-template-rendering openid-authentication"
+      NUXEO_ARIZONA_PACKAGES: "/opt/nuxeo_arizona_packages/amazon-s3-online-storage-1.7.1.zip /opt/nuxeo_arizona_packages/nuxeo-extensions-package-1.1-SNAPSHOT.zip /opt/nuxeo_arizona_packages/nuxeo-multi-tenant-1.6.1.zip"
       # amazon-s3-online-storage - Requer registro no Nuxeo
       # nuxeo-web-mobile nuxeo-drive  nuxeo-template-rendering-samples nuxeo-showcase-content
-
-    volumes:
-      - data-nuxeo:/var/lib/nuxeo/data
-
-  nuxeo_worker:
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile-nuxeo
-    image: arizona/nuxeo-ffmpeg
-    environment:
-      XXXXX: worker
-
-  nuxeo_worker2:
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile-nuxeo
-    image: arizona/nuxeo-ffmpeg
-    environment:
-      XXXXX: worker
 
 volumes:
   data-postgres:
