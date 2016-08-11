@@ -17,3 +17,15 @@ RUN ./prepare-packages.sh \
  && cd /tmp \
  && rm -Rf ffmpeg-nuxeo \
  && rm -rf /var/lib/apt/lists/*
+
+# Custom Packages
+COPY ./local_packages /tmp/packages
+
+# EntryPoint
+COPY local_packages.sh /docker-entrypoint-initnuxeo.d/local_packages.sh
+COPY amazon_s3.sh /docker-entrypoint-initnuxeo.d/amazon_s3.sh
+
+# OpenId
+COPY arizona_openid/openid-config.xml /opt/nuxeo/server/nxserver/config/openid-config.xml
+
+WORKDIR /

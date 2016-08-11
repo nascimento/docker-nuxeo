@@ -51,13 +51,6 @@ services:
       - elasticsearch
     volumes:
       - data-nuxeo:/var/lib/nuxeo/data
-      # Packages to Nuxeo install
-      - ./nuxeo/packages:/opt/nuxeo_arizona_packages
-      # EntryPoint
-      - ./nuxeo/arizona_packages.sh:/docker-entrypoint-initnuxeo.d/arizona_packages.sh
-      - ./nuxeo/arizona_s3.sh:/docker-entrypoint-initnuxeo.d/arizona_s3.sh
-      # OpenId
-      - ./nuxeo/arizona_openid/openid-config.xml:/opt/nuxeo/server/nxserver/config/openid-config.xml
     environment:
       NUXEO_DB_TYPE: postgresql
       NUXEO_DB_HOST: postgres
@@ -74,10 +67,15 @@ services:
       NUXEO_ES_REPLICAS: 0
       NUXEO_ES_SHARDS: 5
 
-      NUXEO_PACKAGES: "nuxeo-diff nuxeo-spreadsheet nuxeo-dam nuxeo-template-rendering openid-authentication"
-      NUXEO_ARIZONA_PACKAGES: "/opt/nuxeo_arizona_packages/amazon-s3-online-storage-1.7.1.zip /opt/nuxeo_arizona_packages/nuxeo-extensions-package-1.1-SNAPSHOT.zip /opt/nuxeo_arizona_packages/nuxeo-multi-tenant-1.6.1.zip"
-      # amazon-s3-online-storage - Requer registro no Nuxeo
-      # nuxeo-web-mobile nuxeo-drive  nuxeo-template-rendering-samples nuxeo-showcase-content
+      NUXEO_PACKAGES: "nuxeo-diff nuxeo-spreadsheet nuxeo-dam nuxeo-template-rendering openid-authentication" # nuxeo-web-mobile nuxeo-drive  nuxeo-template-rendering-samples nuxeo-showcase-content
+      LOCAL_PACKAGES: "/tmp/packages/amazon-s3-online-storage-1.7.2.zip /tmp/packages/nuxeo-multi-tenant-1.6.2.zip" # /tmp/packages/nuxeo-extensions-package-1.1-SNAPSHOT.zip
+      #### ATENCAO: amazon-s3-online-storage - Requer registro no Nuxeo
+
+      NUXEO_S3_REGION: sa-east-1
+      NUXEO_S3_BUCKET: teste-nuxeo
+      NUXEO_S3_ID: AKIAI2MY6I73CJ2IEAEQ
+      NUXEO_S3_SECRET: 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
+
 
 volumes:
   data-postgres:
