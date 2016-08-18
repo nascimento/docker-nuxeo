@@ -1,0 +1,11 @@
+{
+  "generator-nuxeo": {
+    "promptValues": {
+      "parent_package": "global.arizona.nuxeo",
+      "parent_artifact": "arizonaworker-parent",
+      "nuxeo_version": "8.3",
+      "package": "global.arizona.nuxeo"
+    },
+    "multi": true
+  }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<component name="datasources-arizona-config">
+  <extension target="org.nuxeo.runtime.datasource" point="datasources">
+    <datasource name="jdbc/repository_arizona" xaDataSource="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"
+      maxPoolSize="100" minPoolSize="5" blockTimeoutMillis="10000">
+        <property name="ServerName">mysql</property>
+        <property name="PortNumber">3306</property>
+        <property name="DatabaseName">arizona</property>
+        <property name="User">arizona</property>
+        <property name="Password">arizona</property>
+    </datasource>
+  </extension>
+</component>

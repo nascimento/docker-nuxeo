@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component name="global.arizona.nuxeo.command" version="1.0">
+    <!-- <require>org.nuxeo.runtime.started</require> -->
+    <!-- Comando para extração do preview do indesign -->
+
+    <extension point="queues" target="org.nuxeo.ecm.core.work.service">
+      <queue id="*" processing="false"/>
+    </extension>
+
+</component>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<component name="repository-arizona-config">
+  <extension target="org.nuxeo.ecm.core.storage.sql.RepositoryService" point="repository">
+    <repository name="arizona" label="Arizona" factory="org.nuxeo.ecm.core.storage.sql.ra.PoolingRepositoryFactory">
+      <pool minPoolSize="0" maxPoolSize="20" blockingTimeoutMillis="100" idleTimeoutMinutes="10" />
+      <clustering enabled="false" delay="1000" />
+      <!-- <noDDL>false</noDDL>
+      <ddlMode>execute</ddlMode>
+      <aclOptimizations enabled="true"/>
+      <pathOptimizations enabled="true"/>
+      <idType>varchar</idType>
+      <indexing>
+        <fulltext disabled="false" searchDisabled="false">
+          <index name="boticario_default">
+          </index>
+          <index name="boticario_title">
+            <field>dc:title</field>
+          </index>
+          <index name="boticario_description">
+            <field>dc:description</field>
+          </index>
+        </fulltext>
+      </indexing>
+      <schema>
+        <field type="largetext">var_ParallelDocumentReview:review_result</field>
+      </schema> -->
+    </repository>
+  </extension>
+  <extension target="org.nuxeo.ecm.core.blob.BlobManager" point="configuration">
+    <blobprovider name="arizona">
+      <class>org.nuxeo.ecm.core.storage.sql.S3BinaryManager</class>
+      <property name="path">/tmp</property>
+    </blobprovider>
+  </extension>
+ </component>

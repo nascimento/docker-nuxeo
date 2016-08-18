@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<component name="datasources-boticario-config">
+  <extension target="org.nuxeo.runtime.datasource" point="datasources">
+    <datasource name="jdbc/repository_boticario" xaDataSource="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"
+      maxPoolSize="100" minPoolSize="5" blockTimeoutMillis="10000">
+        <property name="ServerName">mysql</property>
+        <property name="PortNumber">3306</property>
+        <property name="DatabaseName">boticario</property>
+        <property name="User">boticario</property>
+        <property name="Password">boticario</property>
+    </datasource>
+  </extension>
+</component>
