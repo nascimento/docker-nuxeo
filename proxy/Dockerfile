@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM httpd:latest
 
 COPY httpd.conf /usr/local/apache2/conf/httpd.conf
 COPY proxynuxeo.conf /usr/local/apache2/conf/vhosts/proxynuxeo.conf

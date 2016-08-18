@@ -29,3 +29,5 @@ COPY amazon_s3.sh /docker-entrypoint-initnuxeo.d/amazon_s3.sh
 COPY arizona_openid/openid-config.xml /opt/nuxeo/server/nxserver/config/openid-config.xml
 
 WORKDIR /
+
+COPY nuxeo.conf ./

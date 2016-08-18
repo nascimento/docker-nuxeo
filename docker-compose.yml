@@ -11,15 +11,27 @@ services:
       - "80:80"
       - "443:443"
 
-  postgres:
-    build: ./postgres
+  # postgres:
+  #   build: ./postgres
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #   volumes:
+  #     - data-postgres:/var/lib/postgres/data
+
+  mysql:
+    build: ./mysql
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin4infra
+       - "3306:3306"
     volumes:
-      - data-postgres:/var/lib/postgres/data
+      - data-mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin4infra
+      - MYSQL_DATABASE=nuxeo
+      - MYSQL_USER=nuxeo
+      - MYSQL_PASSWORD=nuxeo
 
   elasticsearch:
     image: elasticsearch:1.5
@@ -43,17 +55,23 @@ services:
       - "8080:8080"
     links:
       - redis
-      - postgres
+      - mysql # postgres or mysql
       - elasticsearch
     depends_on:
       - redis
-      - postgres
+      - mysql # postgres or mysql
       - elasticsearch
     volumes:
       - data-nuxeo:/var/lib/nuxeo/data
+      - ./nuxeo/nuxeo.conf:/nuxeo.conf
+      # - ./nuxeo/repositories/datasources-arizona-config.xml:/opt/nuxeo/server/nxserver/config/datasources-arizona-config.xml
+      # - ./nuxeo/repositories/datasources-boticario-config.xml:/opt/nuxeo/server/nxserver/config/datasources-boticario-config.xml
+      # - ./nuxeo/repositories/repository-arizona-config.xml:/opt/nuxeo/server/nxserver/config/repository-arizona-config.xml
+      # - ./nuxeo/repositories/repository-boticario-config.xml:/opt/nuxeo/server/nxserver/config/repository-boticario-config.xml
+      # - ./nuxeo/repositories/elasticsearch-config.xml.nxftl:/opt/nuxeo/server/templates/common-base/nxserver/config/elasticsearch-config.xml.nxftl
     environment:
-      NUXEO_DB_TYPE: postgresql
-      NUXEO_DB_HOST: postgres
+      NUXEO_DB_TYPE: mysql # postgresql or mysql
+      NUXEO_DB_HOST: mysql
       NUXEO_DB_NAME: nuxeo
       NUXEO_DB_USER: nuxeo
       NUXEO_DB_PASSWORD: nuxeo
@@ -63,12 +81,14 @@ services:
 
       NUXEO_ES_HOSTS: elasticsearch:9300
       NUXEO_ES_CLUSTER_NAME: elasticsearch
-      NUXEO_ES_INDEX_NAME: nuxeo_tenant
+      NUXEO_ES_INDEX_NAME: nuxeo_default
       NUXEO_ES_REPLICAS: 0
       NUXEO_ES_SHARDS: 5
 
-      NUXEO_PACKAGES: "nuxeo-diff nuxeo-spreadsheet nuxeo-dam nuxeo-template-rendering openid-authentication" # nuxeo-web-mobile nuxeo-drive  nuxeo-template-rendering-samples nuxeo-showcase-content
-      LOCAL_PACKAGES: "/tmp/packages/amazon-s3-online-storage-1.7.2.zip /tmp/packages/nuxeo-multi-tenant-1.6.2.zip" # /tmp/packages/nuxeo-extensions-package-1.1-SNAPSHOT.zip
+      NUXEO_PACKAGES: "nuxeo-web-ui nuxeo-diff nuxeo-spreadsheet nuxeo-dam nuxeo-template-rendering openid-authentication" # nuxeo-web-mobile nuxeo-drive  nuxeo-template-rendering-samples nuxeo-showcase-content
+      LOCAL_PACKAGES: "/tmp/packages/amazon-s3-online-storage-1.7.2.zip /tmp/packages/nuxeo-multi-tenant-1.6.3.zip"
+
+      # LOCAL_PACKAGES: "/tmp/packages/nuxeo-diff-1.7.2.zip /tmp/packages/nuxeo-spreadsheet-1.2.2.zip /tmp/packages/nuxeo-dam-6.2.2.zip /tmp/packages/nuxeo-template-rendering-6.6.2.zip /tmp/packages/openid-authentication-1.1.2.zip /tmp/packages/amazon-s3-online-storage-1.7.2.zip /tmp/packages/nuxeo-multi-tenant-1.6.2.zip" # /tmp/packages/nuxeo-extensions-package-1.1-SNAPSHOT.zip
       #### ATENCAO: amazon-s3-online-storage - Requer registro no Nuxeo
 
       NUXEO_S3_REGION: sa-east-1
@@ -79,6 +99,8 @@ services:
 
 volumes:
   data-postgres:
+    driver: local
+  data-mysql:
     driver: local
   data-nuxeo:
     driver: local
